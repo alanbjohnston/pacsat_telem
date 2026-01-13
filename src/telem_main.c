@@ -223,30 +223,7 @@ void signal_load_config (int sig) {
 
 int read_sensors(uint32_t now) {
 	g_sensor_telemetry.timestamp = now;
-	/* Read the PI sensors */
-
-//	if (g_state_sensors_methane_enabled) {
-//		lgGpioWrite(gpio_hd, SENSORS_GPIO_MQ6_EN, 1);
-//		rc = adc_read(ADC_METHANE_CHAN, &val);
-//		if (rc != EXIT_SUCCESS) {
-//			if (g_verbose)
-//				printf("Could not open MQ-6 Methane sensor ADC channel %d\n",ADC_METHANE_CHAN);
-//			g_sensor_telemetry.methane_conc = 0;
-//			g_sensor_telemetry.methane_sensor_valid = SENSOR_ERR;
-//		} else {
-//			g_sensor_telemetry.methane_conc = val;
-//			g_sensor_telemetry.methane_sensor_valid = SENSOR_ON;
-//			if (g_verbose)
-//				printf("MQ-6 Methane: %d,",val);
-//		}
-//	} else {
-//		lgGpioWrite(gpio_hd, SENSORS_GPIO_MQ6_EN, 0);
-		g_sensor_telemetry.methane_conc = 33;
-		g_sensor_telemetry.methane_sensor_valid = 1;
-//	}
-
-		g_sensor_telemetry.air_quality = 22;
-		g_sensor_telemetry.air_q_sensor_valid = 1;
+	/* This is where you would the PI sensors */
 
 		g_sensor_telemetry.SHTC3_temp = 11;
 		g_sensor_telemetry.SHTC3_humidity = 55;
