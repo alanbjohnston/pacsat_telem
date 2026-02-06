@@ -29,7 +29,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <stdbool.h>
-#include <lgpio.h>
+//#include <lgpio.h>
 #include <pthread.h>
 
 #include "pacsat_telem.h"
