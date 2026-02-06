@@ -31,6 +31,7 @@
 #include <stdbool.h>
 //#include <lgpio.h>
 #include <pthread.h>
+#include <bsd/string.h>
 
 #include "pacsat_telem.h"
 #include "sensor_telemetry.h"
