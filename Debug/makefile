@@ -40,7 +40,7 @@ main-build: pacsat_telem
 pacsat_telem: $(OBJS) $(USER_OBJS) makefile $(OPTIONAL_TOOL_DEPS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
-	gcc  -o "pacsat_telem" $(OBJS) $(USER_OBJS) $(LIBS) -lg0kla_common -lpthread
+	gcc  -o "pacsat_telem" $(OBJS) $(USER_OBJS) $(LIBS) -lg0kla_common -lpthread -lbsd
 	@echo 'Finished building target: $@'
 	@echo ' '
 
