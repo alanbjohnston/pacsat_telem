@@ -212,7 +212,9 @@ void help(void) {
 void signal_exit (int sig) {
 	if(g_verbose && sig > 0)
 		printf (" Signal received, exiting ...\n");
-	lguSleep(2/1000);
+//	lguSleep(2/1000);
+	uSleep(2/1000);
+	
 	exit (0);
 }
 
