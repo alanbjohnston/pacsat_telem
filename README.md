@@ -3,6 +3,7 @@
 installation instructions for Bullseye for CubeSatSim (test on Bookworm TBD)
 
        sudo apt-get install -y libbsd-dev
+       cd
        git clone https://github.com/alanbjohnston/pacsat_telem.git
        cd pacsat_telem/Debug
        make all
