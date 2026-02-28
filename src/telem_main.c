@@ -58,6 +58,7 @@ int read_sensors(uint32_t now);
 double linear_interpolation(double x, double x0, double x1, double y0, double y1);
 int tlm_send_time();
 int tlm_send_sensor_telem();
+int tlm_send_file();
 
 /* Local Variables */
 pthread_t tnc_listen_pthread;
