@@ -282,7 +282,7 @@ int tlm_send_file() {
 
 	debug_print("Reading from tlm.bin\n");
 
-	char buffer[80]; // telemetry buffer
+	char buffer[78]; // telemetry buffer
 	memset(buffer, 0, sizeof(buffer));
 	FILE *telem_binary = fopen("/home/pi/CubeSatSim/tlm.bin", "rb");
 
