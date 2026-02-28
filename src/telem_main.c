@@ -287,7 +287,7 @@ int tlm_send_file() {
 	FILE *telem_binary = fopen("/home/pi/CubeSatSim/tlm.bin", "rb");
 
 	if (telem_binary != NULL) {
-		int bytes_read = fread(buffer, 1, 78, telem_binary);
+		int bytes_read = fread(buffer, 1, 77, telem_binary);
 		debug_print("Read %d bytes from tlm.bin\n", bytes_read);
 	}
 	else
