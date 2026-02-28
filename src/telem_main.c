@@ -179,11 +179,13 @@ int main(int argc, char *argv[]) {
 			if ((now - last_time_checked_period_to_sample_telem) > PERIOD_TO_SAMPLE_TELEM_IN_SECONDS) {
 				last_time_checked_period_to_sample_telem = now;
 
-				read_sensors(now);
+//				read_sensors(now);
 
 				/* Put in latest data from the CosmicWatches if we have it */
 
-				tlm_send_sensor_telem();
+//				tlm_send_sensor_telem();
+				tlm_send_file();
+				
 			} /* if time to sample sensors */
 		} /* if sensors enabled */
 
@@ -270,6 +272,29 @@ int tlm_send_sensor_telem() {
 
 	debug_print("Sending Sensor Telem: %d\n", g_sensor_telemetry.timestamp  );
 	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
+
+	return rc;
+}
+
+int tlm_send_file() {
+	int rc = EXIT_SUCCESS;
+
+	debug_print("Reading from tlm.bin\n");
+
+	char buffer[80]; // telemetry buffer
+	memset(buffer, 0, sizeof(buffer));
+	FILE *telem_binary = fopen("/home/pi/CubeSatSim/tlm.bin", "rb");
+
+	if (telem_binary != NULL) {
+		int bytes_read = fread(buffer, 1, 78, telem_binary);
+		debug_print("Read %d bytes from tlm.bin\n", bytes_read);
+	}
+	else
+		debug_print("Error opening tlm.bin\n");
+
+//	debug_print("Sending Telem: %d\n", g_sensor_telemetry.timestamp  );
+//	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
+	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&buffer, sizeof(buffer));
 
 	return rc;
 }
