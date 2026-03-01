@@ -274,14 +274,14 @@ double linear_interpolation(double x, double x0, double x1, double y0, double y1
 }
 
 int tlm_send_time() {
-	int rc = EXIT_SUCCESS;
+	int  EXIT_SUCCESS;
 	char status[4];
 	time_t now = time(0);
 	status[0] = now & 0xff;
 	status[1] = (now >> 8) & 0xff;
 	status[2] = (now >> 16) & 0xff;
 	status[3] = (now >> 24) & 0xff;
-#	rc = send_raw_packet(BROADCAST_CALLSIGN, TIME_CALL, PID_NO_PROTOCOL, (unsigned char *)status, sizeof(status));
+//	rc = send_raw_packet(BROADCAST_CALLSIGN, TIME_CALL, PID_NO_PROTOCOL, (unsigned char *)status, sizeof(status));
 	rc = send_raw_packet(callsign, TIME_CALL, PID_NO_PROTOCOL, (unsigned char *)status, sizeof(status));
 
 	return rc;
