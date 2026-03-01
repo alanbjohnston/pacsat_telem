@@ -290,7 +290,8 @@ int tlm_send_sensor_telem() {
 	int rc = EXIT_SUCCESS;
 
 	debug_print("Sending Sensor Telem: %d\n", g_sensor_telemetry.timestamp  );
-	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
+//	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
+	rc = send_raw_packet(callsign, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
 
 	return rc;
 }
@@ -314,7 +315,7 @@ int tlm_send_file() {
 
 //	debug_print("Sending Telem: %d\n", g_sensor_telemetry.timestamp  );
 //	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
-	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&buffer, sizeof(buffer));
+	rc = send_raw_packet(callsign, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&buffer, sizeof(buffer));
 
 	return rc;
 }
