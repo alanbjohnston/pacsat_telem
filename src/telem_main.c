@@ -49,6 +49,7 @@ int g_run_self_test;    /* true when the self test is running */
 int g_verbose = 0;
 char g_log_filename[MAX_FILE_PATH_LEN];
 sensor_telemetry_t g_sensor_telemetry;
+char callsign[12];
 
 /* Forward functions */
 void help(void);
@@ -79,8 +80,6 @@ int main(int argc, char *argv[]) {
 	signal (SIGTERM, signal_exit);
 	signal (SIGHUP, signal_load_config);
 	signal (SIGINT, signal_exit);
-
-	char callsign[10];
 
 	struct option long_option[] = {
 			{"help", no_argument, NULL, 'h'},
@@ -274,7 +273,7 @@ double linear_interpolation(double x, double x0, double x1, double y0, double y1
 }
 
 int tlm_send_time() {
-	int  EXIT_SUCCESS;
+	int  rc = EXIT_SUCCESS;
 	char status[4];
 	time_t now = time(0);
 	status[0] = now & 0xff;
