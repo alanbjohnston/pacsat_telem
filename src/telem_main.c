@@ -80,6 +80,8 @@ int main(int argc, char *argv[]) {
 	signal (SIGHUP, signal_load_config);
 	signal (SIGINT, signal_exit);
 
+	char callsign[10];
+
 	struct option long_option[] = {
 			{"help", no_argument, NULL, 'h'},
 			{"dir", required_argument, NULL, 'd'},
@@ -148,6 +150,22 @@ int main(int argc, char *argv[]) {
 	/* Now read the sensors until we get an interrupt to exit */
 	time_t now = time(0);
 	last_time_checked_wod = now;
+
+	 // Open configuration file with callsign and reset count	
+	FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
+	if (config_file != NULL) {
+	  int reset_count;
+	  fscanf(config_file, "%s %d ", callsign, & reset_count);
+	  fclose(config_file);
+	  printf("PacSat Telem callsign from /home/pi/CubeSatSim/sim.cfg is ");
+	}
+	else
+	{
+		strcpy(callsign, "AMSAT"); 
+		printf("PacSat Telem Callsign default is ");
+	}
+	strcat(callsign, "-11");
+	printf("%s\n", callsign);
 
 	while (1) {
 		now = time(0);
@@ -263,7 +281,8 @@ int tlm_send_time() {
 	status[1] = (now >> 8) & 0xff;
 	status[2] = (now >> 16) & 0xff;
 	status[3] = (now >> 24) & 0xff;
-	rc = send_raw_packet(BROADCAST_CALLSIGN, TIME_CALL, PID_NO_PROTOCOL, (unsigned char *)status, sizeof(status));
+#	rc = send_raw_packet(BROADCAST_CALLSIGN, TIME_CALL, PID_NO_PROTOCOL, (unsigned char *)status, sizeof(status));
+	rc = send_raw_packet(callsign, TIME_CALL, PID_NO_PROTOCOL, (unsigned char *)status, sizeof(status));
 
 	return rc;
 }
