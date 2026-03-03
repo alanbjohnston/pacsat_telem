@@ -49,6 +49,7 @@ int g_run_self_test;    /* true when the self test is running */
 int g_verbose = 0;
 char g_log_filename[MAX_FILE_PATH_LEN];
 sensor_telemetry_t g_sensor_telemetry;
+char callsign[12];
 
 /* Forward functions */
 void help(void);
@@ -148,6 +149,22 @@ int main(int argc, char *argv[]) {
 	/* Now read the sensors until we get an interrupt to exit */
 	time_t now = time(0);
 	last_time_checked_wod = now;
+
+	 // Open configuration file with callsign and reset count	
+	FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
+	if (config_file != NULL) {
+	  int reset_count;
+	  fscanf(config_file, "%s %d ", callsign, & reset_count);
+	  fclose(config_file);
+	  printf("PacSat Telem callsign from /home/pi/CubeSatSim/sim.cfg is ");
+	}
+	else
+	{
+		strcpy(callsign, "AMSAT"); 
+		printf("PacSat Telem Callsign default is ");
+	}
+	strcat(callsign, "-11");
+	printf("%s\n", callsign);
 
 	while (1) {
 		now = time(0);
@@ -256,14 +273,15 @@ double linear_interpolation(double x, double x0, double x1, double y0, double y1
 }
 
 int tlm_send_time() {
-	int rc = EXIT_SUCCESS;
+	int  rc = EXIT_SUCCESS;
 	char status[4];
 	time_t now = time(0);
 	status[0] = now & 0xff;
 	status[1] = (now >> 8) & 0xff;
 	status[2] = (now >> 16) & 0xff;
 	status[3] = (now >> 24) & 0xff;
-	rc = send_raw_packet(BROADCAST_CALLSIGN, TIME_CALL, PID_NO_PROTOCOL, (unsigned char *)status, sizeof(status));
+//	rc = send_raw_packet(BROADCAST_CALLSIGN, TIME_CALL, PID_NO_PROTOCOL, (unsigned char *)status, sizeof(status));
+	rc = send_raw_packet(callsign, TIME_CALL, PID_NO_PROTOCOL, (unsigned char *)status, sizeof(status));
 
 	return rc;
 }
@@ -272,7 +290,8 @@ int tlm_send_sensor_telem() {
 	int rc = EXIT_SUCCESS;
 
 	debug_print("Sending Sensor Telem: %d\n", g_sensor_telemetry.timestamp  );
-	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
+//	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
+	rc = send_raw_packet(callsign, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
 
 	return rc;
 }
@@ -296,7 +315,7 @@ int tlm_send_file() {
 
 //	debug_print("Sending Telem: %d\n", g_sensor_telemetry.timestamp  );
 //	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
-	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&buffer, sizeof(buffer));
+	rc = send_raw_packet(callsign, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&buffer, sizeof(buffer));
 
 	return rc;
 }
