@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 
 
 	if (g_verbose) {
-		printf("Example Pacsat Telemetry Capture\n");
+		printf("Pacsat Telemetry for the CubeSatSim\n");
 	}
 
 	/**
