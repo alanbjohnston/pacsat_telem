@@ -182,14 +182,16 @@ int main(int argc, char *argv[]) {
 
 					long size = log_append(wod_telem_path,(unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
 					if (size < sizeof(g_sensor_telemetry)) {
-						if (g_verbose)
+						if (g_verbose) {
 							printf("ERROR, could not save data to filename: %s\n",wod_telem_path);
 							fflush(stdout);
+						}
 						g_num_of_file_io_errors++;
 					} else {
-						if (g_verbose)
+						if (g_verbose) {
 							printf("Wrote WOD file: %s at %d\n",wod_telem_path, g_sensor_telemetry.timestamp);
 							fflush(stdout);
+						}
 					}
 
 					/* If we have exceeded the WOD size threshold then roll the WOD file */
@@ -242,9 +244,10 @@ void help(void) {
 
 
 void signal_exit (int sig) {
-	if(g_verbose && sig > 0)
+	if(g_verbose && sig > 0) {
 		printf (" Signal received, exiting ...\n");
 		fflush(stdout);
+	}
 //	lguSleep(2/1000);
 	usleep(2/1000);
 	
