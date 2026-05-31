@@ -313,6 +313,7 @@ int tlm_send_file() {
 	int rc = EXIT_SUCCESS;
 
 	debug_print("Reading from tlm.bin\n");
+	fflush(stdout);
 	int len = 78;
 
 	char buffer[len]; // telemetry buffer
@@ -322,6 +323,7 @@ int tlm_send_file() {
 	if (telem_binary != NULL) {
 		int bytes_read = fread(buffer, 1, len, telem_binary);
 		debug_print("Read %d bytes from tlm.bin\n", bytes_read);
+		fflush(stdout);
 	}
 	else
 		debug_print("Error opening tlm.bin\n");
