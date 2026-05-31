@@ -123,6 +123,7 @@ int main(int argc, char *argv[]) {
 
 	if (g_verbose) {
 		printf("Pacsat Telemetry for the CubeSatSim\n");
+		fflush(stdout);
 	}
 
 	/**
@@ -138,6 +139,7 @@ int main(int argc, char *argv[]) {
 		int rc = pthread_create( &tnc_listen_pthread, NULL, tnc_listen_process, (void*) name);
 		if (rc != EXIT_SUCCESS) {
 			error_print("FATAL. Could not start the TNC listen thread.\n");
+			fflush(stdout);
 			exit(rc);
 		}
 
@@ -157,14 +159,17 @@ int main(int argc, char *argv[]) {
 	  fscanf(config_file, "%s %d ", callsign, & reset_count);
 	  fclose(config_file);
 	  printf("PacSat Telem callsign from /home/pi/CubeSatSim/sim.cfg is ");
+	  fflush(stdout);
 	}
 	else
 	{
 		strcpy(callsign, "AMSAT"); 
 		printf("PacSat Telem Callsign default is ");
+		fflush(stdout);
 	}
 	strcat(callsign, "-11");
 	printf("%s\n", callsign);
+	fflush(stdout);
 
 	while (1) {
 		now = time(0);
@@ -179,15 +184,18 @@ int main(int argc, char *argv[]) {
 					if (size < sizeof(g_sensor_telemetry)) {
 						if (g_verbose)
 							printf("ERROR, could not save data to filename: %s\n",wod_telem_path);
+							fflush(stdout);
 						g_num_of_file_io_errors++;
 					} else {
 						if (g_verbose)
 							printf("Wrote WOD file: %s at %d\n",wod_telem_path, g_sensor_telemetry.timestamp);
+							fflush(stdout);
 					}
 
 					/* If we have exceeded the WOD size threshold then roll the WOD file */
 					if (size/1024 > MAX_WOD_FILE_SIZE_IN_KB) {
 						debug_print("Rolling SENSOR WOD file as it is: %.1f KB\n", size/1024.0);
+						fflush(stdout);
 						log_add_to_directory(wod_telem_path);
 					}
 
@@ -210,6 +218,7 @@ int main(int argc, char *argv[]) {
 
 		if (g_num_of_file_io_errors > MAX_NUMBER_FILE_IO_ERRORS) {
 			printf("ERROR: Too many file io/errors.  Exiting\n");
+			fflush(stdout);
 			signal_exit(0);
 	
 		}
@@ -227,6 +236,7 @@ void help(void) {
 			"-d,--dir                         use this data directory, rather than default\n"
 			"-v,--verbose                     print additional status and progress messages\n"
 	);
+	fflush(stdout);
 	exit(EXIT_SUCCESS);
 }
 
@@ -234,6 +244,7 @@ void help(void) {
 void signal_exit (int sig) {
 	if(g_verbose && sig > 0)
 		printf (" Signal received, exiting ...\n");
+		fflush(stdout);
 //	lguSleep(2/1000);
 	usleep(2/1000);
 	
@@ -291,6 +302,7 @@ int tlm_send_sensor_telem() {
 	int rc = EXIT_SUCCESS;
 
 	debug_print("Sending Sensor Telem: %d\n", g_sensor_telemetry.timestamp  );
+	fflush(stdout);
 //	rc = send_raw_packet(BROADCAST_CALLSIGN, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
 	rc = send_raw_packet(callsign, TELEM_TYPE_1_CALL, PID_NO_PROTOCOL, (unsigned char *)&g_sensor_telemetry, sizeof(g_sensor_telemetry));
 
