@@ -217,14 +217,14 @@ int main(int argc, char *argv[]) {
 			} /* if time to sample sensors */
 		} /* if sensors enabled */
 
-/*
+
 		if (g_num_of_file_io_errors > MAX_NUMBER_FILE_IO_ERRORS) {
 			printf("ERROR: Too many file io/errors.  Exiting\n");
 			fflush(stdout);
 			signal_exit(0);
 	
 		}
-*/		
+		
 		sleep(1); // wait 1 second before checking again
 	} /* while (1) */
 }
