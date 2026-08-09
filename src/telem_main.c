@@ -328,6 +328,7 @@ int tlm_send_file() {
 		int bytes_read = fread(buffer, 1, len, telem_binary);
 		debug_print("Read %d bytes from tlm.bin\n", bytes_read);
 		fflush(stdout);
+		fclose(telem_binary);
 	}
 	else
 		debug_print("Error opening tlm.bin\n");
