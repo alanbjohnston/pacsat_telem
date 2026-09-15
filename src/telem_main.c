@@ -214,6 +214,8 @@ int main(int argc, char *argv[]) {
 
 //				tlm_send_sensor_telem();
 				tlm_send_file();
+
+				tlm_send_camera_image();
 				
 			} /* if time to sample sensors */
 		} /* if sensors enabled */
@@ -349,11 +351,11 @@ int tlm_send_camera_image() {
 	printf("os-release: %s\n", cmdbuffer);
 	char os_present[] = "bookworm";
 	// printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
-	int os_status = (strstr( (const char *)& cmdbuffer, os_present) != NULL) ? ON : OFF;	
+	int os_status = (strstr( (const char *)& cmdbuffer, os_present) != NULL) ? 1 : 0;	
 	printf("os_status: %d\n", os_status);
 	pclose(os_test);
 
-	if (os_status == ON) {  // bookworm	
+	if (os_status == 1) {  // bookworm	
 		system("rpicam-still -o /home/pi/pacsat_telem/camera.jpg --width 32 --height 25");
 	else	
 		system("raspistill -o /home/pi/pacsat_telem/camera.jpg -w 32 -h 25");	
