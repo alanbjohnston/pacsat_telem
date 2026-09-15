@@ -355,7 +355,7 @@ int tlm_send_camera_image() {
 	printf("os_status: %d\n", os_status);
 	pclose(os_test);
 
-	if (os_status == 1) {  // bookworm	
+	if (os_status == 1)   // bookworm	
 		system("rpicam-still -o /home/pi/pacsat_telem/camera.jpg --width 32 --height 25");
 	else	
 		system("raspistill -o /home/pi/pacsat_telem/camera.jpg -w 32 -h 25");	
