@@ -60,6 +60,7 @@ double linear_interpolation(double x, double x0, double x1, double y0, double y1
 int tlm_send_time();
 int tlm_send_sensor_telem();
 int tlm_send_file();
+int tlm_send_camera_image();
 
 /* Local Variables */
 pthread_t tnc_listen_pthread;
@@ -339,4 +340,29 @@ int tlm_send_file() {
 
 	return rc;
 }
+int tlm_send_camera_image() {
+	int rc = EXIT_SUCCESS;
 
+	char cmdbuffer[1000];
+	FILE * os_test = popen("cat /etc/os-release", "r");
+	fgets(cmdbuffer, 1000, os_test);
+	printf("os-release: %s\n", cmdbuffer);
+	char os_present[] = "bookworm";
+	// printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
+	int os_status = (strstr( (const char *)& cmdbuffer, os_present) != NULL) ? ON : OFF;	
+	printf("os_status: %d\n", os_status);
+	pclose(os_test);
+
+	if (os_status == ON) {  // bookworm	
+		system("rpicam-still -o /home/pi/pacsat_telem/camera.jpg --width 32 --height 25");
+	else	
+		system("raspistill -o /home/pi/pacsat_telem/camera.jpg -w 32 -h 25");	
+
+	FILE *camera_file = fopen("/home/pi/pacsat_telem/camera.jpg", "r");
+  	if (camera_file == NULL) 	  	
+	    fprintf(stderr,"Can't get camera image\n");
+  	else 		
+		system("cp /home/pi/pacsat_telem/camera.jpg /home/pi/PacSat/pacsat/txt/camera.jpg");
+		
+	return rc;
+}
