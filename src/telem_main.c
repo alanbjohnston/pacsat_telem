@@ -363,8 +363,10 @@ int tlm_send_camera_image() {
 	FILE *camera_file = fopen("/home/pi/pacsat_telem/camera.jpg", "r");
   	if (camera_file == NULL) 	  	
 	    fprintf(stderr,"Can't get camera image\n");
-  	else 		
+  	else { 		
+		system("sudo rm /home/pi/pacsat_telem/camera.jpg");
 		system("cp /home/pi/pacsat_telem/camera.jpg /home/pi/PacSat/pacsat/txt/camera.jpg");
+	}
 		
 	return rc;
 }
